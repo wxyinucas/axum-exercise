@@ -1,11 +1,18 @@
 use axum::extract::Path;
+use axum::http::{HeaderMap, StatusCode};
 use axum::response::Html;
 use axum::routing::get;
 use axum::{Form, Router};
 use serde::Deserialize;
+use tower_http::trace::TraceLayer;
 
 #[tokio::main]
 async fn main() {
+    if std::env::var_os("RUST_LOG").is_none() {
+        std::env::set_var("RUST_LOG", "basic_router=debug,tower_http=debug");
+    }
+    tracing_subscriber::fmt::init();
+
     let news_router = Router::new()
         .route("/", get(news_index))
         .route("/detail/:id", get(news_detail))
@@ -13,7 +20,9 @@ async fn main() {
 
     let app = Router::new()
         .route("/user/:id", get(get_user).post(edit_user))
-        .nest("/news", news_router);
+        .route("/redirect", get(redirect))
+        .nest("/news", news_router)
+        .layer(TraceLayer::new_for_http());
 
     axum::Server::bind(&"127.0.0.1:3000".parse().unwrap())
         .serve(app.into_make_service())
@@ -106,4 +115,13 @@ async fn news_detail(Path(id): Path<i32>) -> String {
 
 async fn news_comments(Path(id): Path<i32>) -> String {
     format!("comments id: {}", id)
+}
+
+async fn redirect() -> (StatusCode, HeaderMap, ()) {
+    let mut headers = HeaderMap::new();
+    headers.insert(
+        axum::http::header::LOCATION,
+        "http://axum.rs".parse().unwrap(),
+    );
+    (StatusCode::FOUND, headers, ())
 }
