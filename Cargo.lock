@@ -1031,6 +1031,7 @@ dependencies = [
  "serde_json",
  "sqlx",
  "tokio",
+ "toml",
  "tower-http",
  "tracing",
  "tracing-subscriber",

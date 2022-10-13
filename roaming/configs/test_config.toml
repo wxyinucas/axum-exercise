@@ -1,0 +1,9 @@
+[web_config]
+addr = '127.0.0.1:3000'
+
+[redis_config]
+addr = 'redis://127.0.0.1:6379'
+
+[postgres_config]
+domain = 'postgres://127.0.0.1:5432'
+db_name = 'new_db'

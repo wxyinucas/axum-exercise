@@ -28,18 +28,21 @@ const REDIS_DSN: &str = "redis://127.0.0.1:6379/";
 
 #[derive(Serialize, Deserialize, Debug)]
 struct UserSession {
+    // 被保存的信息
     username: String,
     level: u8,
 }
 
 #[derive(Deserialize)]
 struct UserLoginForm {
+    // 从html里传递的信息，todo 如何传递的？
     username: String,
     password: String,
 }
 
 #[derive(Deserialize)]
 struct LoginMessage {
+    // todo 现在有bug，如何与template更好地结合？
     msg: Option<String>,
 }
 
@@ -50,6 +53,7 @@ struct LoginPage {
 }
 
 fn save_session_to_cookie(session_id: &str, headers: &mut HeaderMap) {
+    // todo cookie 与 session 的关系是？
     let cookie = format!("{}={}", SESSION_ID_COOKIE_NAME, session_id);
     headers.insert(
         axum::http::header::SET_COOKIE,
@@ -88,7 +92,7 @@ async fn login_action(
     Form(frm): Form<UserLoginForm>,
 ) -> Result<(StatusCode, HeaderMap, ()), String> {
     let mut headers = HeaderMap::new();
-    let url;
+    let url; // todo！！！ 如何重定向？？？
 
     if !(&frm.username == "rex_wang" && &frm.password == "axum.rs") {
         url = "/login?msg=用户名或密码错误";
