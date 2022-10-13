@@ -1,0 +1,6 @@
+[web_config]
+addr = '127.0.0.1:3000'
+
+[postgres_config]
+db_name = 'new_db'
+domain = 'postgres://127.0.0.1:5432'

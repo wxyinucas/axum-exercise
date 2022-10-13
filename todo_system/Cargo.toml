@@ -1,0 +1,22 @@
+[package]
+name = "todo_system"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# configuration
+toml = "0.5"
+
+# storage
+sqlx = {version = "0.6", features=["postgres", "runtime-tokio-rustls"]}
+
+# web
+tokio = {version = "1.21", features=["full"]}
+axum = "0.5"
+serde = {version = "1", features = ["derive",]}
+
+# error handling
+anyhow = "1"
+thiserror = "1"
