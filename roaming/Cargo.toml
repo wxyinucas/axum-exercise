@@ -26,3 +26,6 @@ jsonwebtoken = "8"
 
 # template
 askama = "0.11"
+
+# uuid
+uuid = { version = "1", features = ["v4"] }

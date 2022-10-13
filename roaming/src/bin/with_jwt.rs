@@ -24,6 +24,7 @@ async fn main() {
 
 const JWT_SECRET: &str = "AXUM.RS";
 
+// TODO: 弄清楚这个流程究竟都做了什么，怎么做的。
 struct Keys {
     encoding: jwt::EncodingKey,
     decoding: jwt::DecodingKey,

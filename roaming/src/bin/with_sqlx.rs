@@ -87,7 +87,7 @@ async fn update(
 }
 
 async fn list(Extension(pool): Extension<Pool<Postgres>>) -> Result<Json<Vec<UserInfo>>, String> {
-    // 注意此处如何处理多个返回值的方法fetch_all()。
+    // TODO: 注意此处如何处理多个返回值的方法fetch_all()。
     let sql = "SELECT id,username,balance FROM account ORDER BY id DESC";
     let result = sqlx::query_as::<Postgres, UserInfo>(sql)
         .fetch_all(&pool)
@@ -101,6 +101,8 @@ async fn transfer(
     Path((from_id, to_id, balance)): Path<(i32, i32, i32)>,
     Extension(pool): Extension<Pool<Postgres>>,
 ) -> Result<String, String> {
+
+    // TODO: 理解transaction，理解execute与fetch，execute与rollback、commit关系！
     let mut tx = pool.begin().await.map_err(|_| "transfer start failed")?;
 
     let sql = " UPDATE account SET balance=balance-$1 WHERE id=$2 and balance>$1";

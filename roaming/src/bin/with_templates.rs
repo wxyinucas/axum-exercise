@@ -15,6 +15,7 @@ async fn main() {
 
 #[derive(Template)]
 #[template(path = "index.html")]
+// TODO: 了解template trait，了解render等methods
 struct IndexTemplate {
     name: String,
 }
