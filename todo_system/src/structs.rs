@@ -77,15 +77,13 @@ pub struct TodoListID {
     pub id: i32,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct CreateTodoList {
     pub title: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct UpdateTodoList {
     pub id: i32,
     pub title: String,
 }
-
-impl Into

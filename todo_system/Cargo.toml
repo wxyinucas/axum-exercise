@@ -15,6 +15,7 @@ sqlx = {version = "0.6", features=["postgres", "runtime-tokio-rustls"]}
 # web
 tokio = {version = "1.21", features=["full"]}
 axum = "0.5"
+axum-macros = "0.2"
 serde = {version = "1", features = ["derive",]}
 
 # error handling

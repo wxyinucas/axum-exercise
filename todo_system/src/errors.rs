@@ -3,10 +3,10 @@ use thiserror::Error;
 
 #[derive(Debug,Error)]
 pub enum TodoError{
-    #[error("Postgres Error")]
+    #[error("Postgres Error {0}")]
     PostgresError(#[from] sqlx::Error),
 
-    #[error("Config error")]
+    #[error("Config error {0}")]
     TomlError(#[from] toml::de::Error),
 }
 

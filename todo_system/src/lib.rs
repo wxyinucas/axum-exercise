@@ -7,4 +7,4 @@ mod handlers;
 pub mod structs;
 
 pub type Result<T> = std::result::Result<T, TodoError>;
-pub use db::Storage;
+pub use db::{Storage, ListStore};
