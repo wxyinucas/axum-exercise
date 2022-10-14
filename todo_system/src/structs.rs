@@ -60,3 +60,32 @@ where
         Self::new(code, msg, None)
     }
 }
+
+// =================================================================================================
+//
+// Todo System
+//
+// =================================================================================================
+#[derive(Debug, Serialize, sqlx::FromRow)]
+pub struct TodoList {
+    pub id: i32,
+    pub title: String,
+}
+
+#[derive(Debug, Serialize, sqlx::FromRow)]
+pub struct TodoListID {
+    pub id: i32,
+}
+
+#[derive(Deserialize)]
+pub struct CreateTodoList {
+    pub title: String,
+}
+
+#[derive(Deserialize)]
+pub struct UpdateTodoList {
+    pub id: i32,
+    pub title: String,
+}
+
+impl Into

@@ -1,6 +1,6 @@
 use axum::Json;
 
-use crate::{Result, TodoResponse};
+use crate::{structs::TodoResponse, Result};
 
 pub async fn usage() -> Result<Json<TodoResponse<Vec<&'static str>>>> {
     let data = r#"
@@ -25,4 +25,13 @@ pub async fn usage() -> Result<Json<TodoResponse<Vec<&'static str>>>> {
 
     let res = TodoResponse::ok(data);
     Ok(Json(res))
+}
+
+// =================================================================================================
+//
+// TodoList
+//
+// =================================================================================================
+mod todo_list{
+
 }

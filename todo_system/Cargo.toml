@@ -20,3 +20,12 @@ serde = {version = "1", features = ["derive",]}
 # error handling
 anyhow = "1"
 thiserror = "1"
+
+
+# tracing
+tracing = "0.1"
+tracing-subscriber = {version = "0.3", features = ["env-filter"]}
+
+
+# async trait
+async-trait = "0.1"
