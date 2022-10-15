@@ -60,7 +60,8 @@ pub mod todo_list {
         Extension(pool): Extension<PgPool>,
         Path(id): Path<i32>,
     ) -> TodoJsonResponse<TodoList> {
-        let res = ListStore::new(pool).find(id).await?;
+        let create_list = TodoListID { id };
+        let res = ListStore::new(pool).find(create_list).await?;
         Ok(Json(TodoResponse::ok(res)))
     }
 
@@ -105,9 +106,10 @@ pub mod todo_item {
 
     pub async fn find(
         Extension(pool): Extension<PgPool>,
-        Path((id,list_id)): Path<i32>,
+        Path((list_id, item_id)): Path<(i32, i32)>,
     ) -> TodoJsonResponse<TodoItem> {
-        let res = ItemStore::new(pool).find(id).await?;
+        let create_item = TodoItemID { id: item_id,list_id };
+        let res = ItemStore::new(pool).find(create_item).await?;
         Ok(Json(TodoResponse::ok(res)))
     }
 

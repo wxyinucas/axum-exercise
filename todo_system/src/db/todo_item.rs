@@ -21,12 +21,14 @@ impl AsRef<PgPool> for ItemStore {
 }
 
 #[async_trait]
-impl Storage<CreateTodoItem, UpdateTodoItem> for ItemStore {
+impl Storage for ItemStore {
+    type CreateType = CreateTodoItem;
+    type UpdateType = UpdateTodoItem;
     type OutputType = TodoItem;
     type IdType = TodoItemID;
 
-    async fn create(&self, form: CreateTodoItem) -> crate::Result<Self::IdType> {
-        let sql = "INSERT INTO todo_item (title, list_id) VALUES ($1, $2) RETURNING id";
+    async fn create(&self, form: Self::CreateType) -> crate::Result<Self::IdType> {
+        let sql = "INSERT INTO todo_item (title, list_id) VALUES ($1, $2) RETURNING id,list_id";
         let res = sqlx::query_as::<Postgres, Self::IdType>(sql)
             .bind(form.title)
             .bind(form.list_id)
@@ -45,17 +47,18 @@ impl Storage<CreateTodoItem, UpdateTodoItem> for ItemStore {
         res
     }
 
-    async fn find(&self, id: i32) -> crate::Result<Self::OutputType> {
-        let sql = "SELECT * FROM todo_item WHERE id = $1";
+    async fn find(&self, id: Self::IdType) -> crate::Result<Self::OutputType> {
+        let sql = "SELECT * FROM todo_item WHERE id = $1 AND list_id = $2";
         let res = sqlx::query_as::<Postgres, Self::OutputType>(sql)
-            .bind(id)
+            .bind(id.id)
+            .bind(id.list_id)
             .fetch_one(self.as_ref())
             .await
             .map_err(TodoError::from);
         res
     }
 
-    async fn update(&self, form: UpdateTodoItem) -> crate::Result<bool> {
+    async fn update(&self, form: Self::UpdateType) -> crate::Result<bool> {
         let sql =
             "UPDATE todo_item SET checked=true WHERE id=$1 AND list_id = $2 AND checked=false";
         let res = sqlx::query(sql)
@@ -67,7 +70,7 @@ impl Storage<CreateTodoItem, UpdateTodoItem> for ItemStore {
         Ok(res.rows_affected() > 0)
     }
 
-    async fn delete(&self, form: UpdateTodoItem) -> crate::Result<bool> {
+    async fn delete(&self, form: Self::UpdateType) -> crate::Result<bool> {
         let sql = "DELETE FROM todo_item WHERE id=$1 AND list_id = $2";
         let res = sqlx::query(sql)
             .bind(form.id)

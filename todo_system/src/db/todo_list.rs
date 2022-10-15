@@ -26,11 +26,13 @@ impl AsRef<PgPool> for ListStore {
 
 #[async_trait]
 // impl Storage<CreateTodoList, UpdateTodoList> for PgPool {
-impl Storage<CreateTodoList, UpdateTodoList> for ListStore {
+impl Storage for ListStore {
+    type CreateType = CreateTodoList;
+    type UpdateType = UpdateTodoList;
     type OutputType = TodoList;
     type IdType = TodoListID;
 
-    async fn create(&self, form: CreateTodoList) -> crate::Result<Self::IdType> {
+    async fn create(&self, form: Self::CreateType) -> crate::Result<Self::IdType> {
         let sql = "INSERT INTO todo_list (title) VALUES ($1) RETURNING id";
         let res = sqlx::query_as::<Postgres, Self::IdType>(sql)
             .bind(form.title)
@@ -49,17 +51,17 @@ impl Storage<CreateTodoList, UpdateTodoList> for ListStore {
         res
     }
 
-    async fn find(&self, id: i32) -> crate::Result<Self::OutputType> {
+    async fn find(&self, id:Self::IdType) -> crate::Result<Self::OutputType> {
         let sql = "SELECT id,title FROM todo_list WHERE id=$1 LIMIT 1";
         let res = sqlx::query_as::<Postgres, Self::OutputType>(sql)
-            .bind(id)
+            .bind(id.id)
             .fetch_one(self.as_ref())
             .await
             .map_err(TodoError::from);
         res
     }
 
-    async fn update(&self, form: UpdateTodoList) -> crate::Result<bool> {
+    async fn update(&self, form: Self::UpdateType) -> crate::Result<bool> {
         debug!("{:?}", form);
         let sql = "UPDATE todo_list SET title=$1 WHERE id=$2";
         let res = sqlx::query(sql)
@@ -72,7 +74,7 @@ impl Storage<CreateTodoList, UpdateTodoList> for ListStore {
         Ok(res.rows_affected() > 0)
     }
 
-    async fn delete(&self, form: UpdateTodoList) -> crate::Result<bool> {
+    async fn delete(&self, form: Self::UpdateType) -> crate::Result<bool> {
         let mut tx = self.as_ref().begin().await.map_err(TodoError::from)?;
 
         let sql = "DELETE FROM todo_list  WHERE id=$1";

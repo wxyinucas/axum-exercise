@@ -101,6 +101,7 @@ pub struct TodoItem{
 #[derive(Debug, Serialize, sqlx::FromRow)]
 pub struct TodoItemID{
     pub id: i32,
+    pub list_id: i32,
 }
 
 #[derive(Debug, Deserialize)]
