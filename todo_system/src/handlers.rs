@@ -38,13 +38,11 @@ pub mod todo_list {
     use axum::extract::Path;
     use axum::{Extension, Json};
     use sqlx::PgPool;
-    use axum_macros::debug_handler;
 
     use crate::handlers::TodoJsonResponse;
     use crate::structs::{CreateTodoList, TodoList, TodoListID, TodoResponse, UpdateTodoList};
     use crate::{ListStore, Storage};
 
-    #[debug_handler]
     pub async fn create(
         Extension(pool): Extension<PgPool>,
         Json(form): Json<CreateTodoList>,
@@ -65,7 +63,7 @@ pub mod todo_list {
         let res = ListStore::new(pool).find(id).await?;
         Ok(Json(TodoResponse::ok(res)))
     }
-    
+
     pub async fn update(
         Extension(pool): Extension<PgPool>,
         Json(form): Json<UpdateTodoList>,
@@ -73,12 +71,59 @@ pub mod todo_list {
         let res = ListStore::new(pool).update(form).await?;
         Ok(Json(TodoResponse::ok(res)))
     }
-    
+
     pub async fn delete(
         Extension(pool): Extension<PgPool>,
-        Path(id): Path<i32>,
+        Json(form): Json<UpdateTodoList>,
     ) -> TodoJsonResponse<bool> {
-        let res = ListStore::new(pool).delete(id).await?;
+        let res = ListStore::new(pool).delete(form).await?;
+        Ok(Json(TodoResponse::ok(res)))
+    }
+}
+
+pub mod todo_item {
+    use axum::extract::Path;
+    use axum::{Extension, Json};
+    use sqlx::PgPool;
+
+    use crate::handlers::TodoJsonResponse;
+    use crate::structs::{CreateTodoItem, TodoItem, TodoItemID, TodoResponse, UpdateTodoItem};
+    use crate::{ItemStore, Storage};
+
+    pub async fn create(
+        Extension(pool): Extension<PgPool>,
+        Json(form): Json<CreateTodoItem>,
+    ) -> TodoJsonResponse<TodoItemID> {
+        let res = ItemStore::new(pool).create(form).await?;
+        Ok(Json(TodoResponse::ok(res)))
+    }
+
+    pub async fn get_all(Extension(pool): Extension<PgPool>) -> TodoJsonResponse<Vec<TodoItem>> {
+        let res = ItemStore::new(pool).get_all().await?;
+        Ok(Json(TodoResponse::ok(res)))
+    }
+
+    pub async fn find(
+        Extension(pool): Extension<PgPool>,
+        Path((id,list_id)): Path<i32>,
+    ) -> TodoJsonResponse<TodoItem> {
+        let res = ItemStore::new(pool).find(id).await?;
+        Ok(Json(TodoResponse::ok(res)))
+    }
+
+    pub async fn check(
+        Extension(pool): Extension<PgPool>,
+        Json(form): Json<UpdateTodoItem>,
+    ) -> TodoJsonResponse<bool> {
+        let res = ItemStore::new(pool).update(form).await?;
+        Ok(Json(TodoResponse::ok(res)))
+    }
+
+    pub async fn delete(
+        Extension(pool): Extension<PgPool>,
+        Json(form): Json<UpdateTodoItem>,
+    ) -> TodoJsonResponse<bool> {
+        let res = ItemStore::new(pool).delete(form).await?;
         Ok(Json(TodoResponse::ok(res)))
     }
 }

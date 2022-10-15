@@ -72,11 +72,11 @@ impl Storage<CreateTodoList, UpdateTodoList> for ListStore {
         Ok(res.rows_affected() > 0)
     }
 
-    async fn delete(&self, id: i32) -> crate::Result<bool> {
+    async fn delete(&self, form: UpdateTodoList) -> crate::Result<bool> {
         let mut tx = self.as_ref().begin().await.map_err(TodoError::from)?;
 
         let sql = "DELETE FROM todo_list  WHERE id=$1";
-        let query = sqlx::query(sql).bind(id);
+        let query = sqlx::query(sql).bind(form.id);
         let res = tx.execute(query).await.map_err(TodoError::from);
         if let Err(err) = res {
             tx.rollback().await.map_err(TodoError::from)?;
@@ -84,7 +84,7 @@ impl Storage<CreateTodoList, UpdateTodoList> for ListStore {
         };
 
         let sql = "DELETE FROM todo_item WHERE list_id=$1";
-        let query = sqlx::query(sql).bind(id);
+        let query = sqlx::query(sql).bind(form.id);
         let res = tx.execute(query).await.map_err(TodoError::from);
         if let Err(err) = res {
             tx.rollback().await.map_err(TodoError::from)?;

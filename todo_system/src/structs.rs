@@ -87,3 +87,31 @@ pub struct UpdateTodoList {
     pub id: i32,
     pub title: String,
 }
+
+
+#[derive(Debug, Serialize, sqlx::FromRow)]
+pub struct TodoItem{
+    pub id: i32,
+    pub title: String,
+    pub checked: bool,
+    pub list_id: i32,
+}
+
+
+#[derive(Debug, Serialize, sqlx::FromRow)]
+pub struct TodoItemID{
+    pub id: i32,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CreateTodoItem {
+    pub title: String,
+    pub list_id: i32,
+}
+
+
+#[derive(Debug, Deserialize)]
+pub struct UpdateTodoItem{
+    pub id: i32,
+    pub list_id: i32,
+}

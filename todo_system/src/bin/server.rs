@@ -25,6 +25,16 @@ async fn main() -> Result<()> {
                 .put(todo_list::update) // todo 这个函数的参数设计的太nm不合理了，这和路由有毛线关系
                 .delete(todo_list::delete),
         )
+        .route(
+            "/todo/:list_id/items",
+            get(todo_item::get_all).post(todo_item::create),
+        )
+        .route(
+            "/todo/:list_id/items/:item_id",
+            get(todo_item::find)
+                .put(todo_item::check)
+                .delete(todo_item::delete),
+        )
         .layer(Extension(pool));
 
     let addr = &(config.web_config.addr);
