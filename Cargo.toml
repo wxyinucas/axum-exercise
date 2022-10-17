@@ -1,2 +1,2 @@
 [workspace]
-members = ["roaming", "todo_system"]
+members = ["roaming", "todo_system", "blog_system"]
