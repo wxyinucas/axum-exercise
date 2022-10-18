@@ -182,6 +182,7 @@ dependencies = [
  "anyhow",
  "askama",
  "axum",
+ "axum-macros",
  "pulldown-cmark",
  "serde",
  "sqlx",
