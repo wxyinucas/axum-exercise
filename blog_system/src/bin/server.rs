@@ -9,7 +9,7 @@ async fn main() {
     }
     tracing_subscriber::fmt::init();
 
-    let frontend_routers = handler::fronted::router();
+    let frontend_routers = handler::frontend::router();
     let backend_routers = handler::backend::router();
 
     let app = Router::new()

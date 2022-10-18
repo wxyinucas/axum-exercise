@@ -2,5 +2,5 @@
 use askama::Template;
 
 #[derive(Template)]
-#[template(path = "fronted/base.html")]
+#[template(path = "frontend/base.html")]
 pub struct Index;
