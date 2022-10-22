@@ -1,0 +1,1 @@
+pub(crate) type HtmlView = axum::response::Html<String>;

@@ -14,6 +14,9 @@ pub enum BlogError {
 
     #[error("Not found error {0}")]
     NotFoundError(String),
+
+    #[error("Duplicate error {0}")]
+    DuplicateError(String),
 }
 
 impl IntoResponse for BlogError {

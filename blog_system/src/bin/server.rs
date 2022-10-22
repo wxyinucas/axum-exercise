@@ -1,6 +1,6 @@
 use axum::Router;
 
-use blog_system::handler;
+use blog_system::Config;
 
 #[tokio::main]
 async fn main() {
@@ -9,8 +9,9 @@ async fn main() {
     }
     tracing_subscriber::fmt::init();
 
-    let frontend_routers = handler::frontend::router();
-    let backend_routers = handler::backend::router();
+    let config = Config::load().unwrap();
+    let frontend_routers = blog_system::frontend::router();
+    let backend_routers = blog_system::backend::router();
 
     let app = Router::new()
         .nest("/", frontend_routers)
