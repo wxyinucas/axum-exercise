@@ -4,14 +4,13 @@ use axum::response::Html;
 use axum::{Extension, Form};
 use sqlx::PgPool;
 
-use super::super::view::{Add, Edit, CategoryIndex};
-use super::super::handlers::Args;
-
 use crate::db::traits::StorageCategory;
-use crate::handler::HtmlView;
-use crate::{form, BlogError, Result, RedirectView, redirect};
 use crate::form::EditCategory;
+use crate::handler::HtmlView;
+use crate::{form, redirect, BlogError, RedirectView, Result};
 
+use super::super::handlers::Args;
+use super::super::view::category::{Add, Index, Edit};
 
 pub async fn add_ui() -> Result<HtmlView> {
     let tmpl = Add {};
@@ -39,7 +38,7 @@ pub async fn index(
     Query(args): Query<Args>,
 ) -> Result<HtmlView> {
     let list = <PgPool as StorageCategory>::list(&pool).await?;
-    let tmpl = CategoryIndex {
+    let tmpl = Index {
         list,
         msg: args.msg,
     };
@@ -52,7 +51,10 @@ pub async fn del(Extension(pool): Extension<PgPool>, Path(id): Path<i32>) -> Res
     redirect("/admin/category?msg=分类删除成功")
 }
 
-pub async fn edit(Extension(pool): Extension<PgPool>, Form(form): Form<EditCategory>) -> Result<RedirectView>{
+pub async fn edit(
+    Extension(pool): Extension<PgPool>,
+    Form(form): Form<EditCategory>,
+) -> Result<RedirectView> {
     <PgPool as StorageCategory>::edit(&pool, &form).await?;
     redirect("/admin/category?msg=分类修改成功")
 }

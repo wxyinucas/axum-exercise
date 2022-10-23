@@ -1,9 +1,10 @@
+use serde::Deserialize;
+
 pub(crate) mod category;
 pub(crate) mod index;
+pub(crate) mod topic;
 // mod article;
 
-
-use serde::{Deserialize};
 #[derive(Deserialize)]
 pub struct Args {
     pub msg: Option<String>,

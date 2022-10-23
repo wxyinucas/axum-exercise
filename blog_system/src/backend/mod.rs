@@ -1,10 +1,12 @@
 use axum::routing::get;
 use axum::Router;
 
+use handlers::{category, topic};
+
+use crate::backend::handlers::index::index;
+
 mod handlers;
 mod view;
-use handlers::category;
-use crate::backend::handlers::index::index;
 
 pub fn router() -> Router {
     let category_router = Router::new()
@@ -12,7 +14,15 @@ pub fn router() -> Router {
         .route("/add", get(category::add_ui).post(category::add))
         .route("/del/:id", get(category::del))
         .route("/edit/:id", get(category::edit_ui).post(category::edit));
+
+    let topic_router = Router::new()
+        .route("/", get(topic::index))
+        .route("/add", get(topic::add_ui).post(topic::add))
+        .route("/edit/:id", get(topic::edit_ui).post(topic::edit))
+        .route("/del/:id", get(topic::del));
+
     Router::new()
         .route("/", get(index))
         .nest("/category", category_router)
+        .nest("/topic", topic_router)
 }
