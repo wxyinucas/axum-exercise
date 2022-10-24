@@ -1,10 +1,12 @@
+use axum::middleware::from_extractor;
 use axum::{Extension, Router};
 use sqlx::PgPool;
 
+use blog_system::middleware::Auth;
 use blog_system::{BlogError, Config};
 
 #[tokio::main]
-async fn main() ->blog_system::Result<()> {
+async fn main() -> blog_system::Result<()> {
     if std::env::var_os("RUST_LOG").is_none() {
         std::env::set_var("RUST_LOG", "server=debug,blog_system=debug");
     }
@@ -16,7 +18,7 @@ async fn main() ->blog_system::Result<()> {
         .map_err(BlogError::from)?;
 
     // let frontend_routers = blog_system::frontend::router();
-    let backend_routers = blog_system::backend::router();
+    let backend_routers = blog_system::backend::router().layer(from_extractor::<Auth>());
     let app = Router::new()
         // .nest("/", frontend_routers)
         .nest("/admin", backend_routers)

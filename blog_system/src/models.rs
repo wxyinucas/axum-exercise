@@ -22,7 +22,7 @@ pub struct TopicList {
     pub category_id: i32,
     pub summary: String,
     pub hit: i32,
-    // pub dateline: time::SystemTime, // todo  新处理方式
+    // pub dateline: time::SystemTime, // TODO 新处理方式
     pub dateline: String,
     pub is_del: bool,
     pub category_name: String,
@@ -57,4 +57,12 @@ pub struct TopicEditData {
     pub category_id: i32,
     pub summary: String,
     pub markdown: String,
+}
+
+#[derive(Serialize, sqlx::FromRow)]
+pub struct Admin {
+    pub id: i32,
+    pub email: String,
+    pub password: String,
+    pub is_del: bool,
 }

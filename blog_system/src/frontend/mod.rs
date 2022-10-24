@@ -7,5 +7,8 @@ mod handler;
 mod view;
 
 pub fn router() -> Router {
-    Router::new().route("/", get(index))
+    Router::new()
+        .route("/", get(index))
+        .route("/auth", get(login_ui).post(login))
+        .route("/logout", get(logout))
 }

@@ -3,31 +3,15 @@ use std::time;
 use axum::async_trait;
 use sqlx::{PgPool, Postgres};
 
+use crate::db::traits::StorageAdmin;
 use crate::form::{CreateCategory, CreateTopic, EditCategory, EditTopic};
 use crate::md::to_html;
-use crate::models::{Category, CategoryID, TopicEditData, TopicID, TopicList};
+use crate::models::{Admin, Category, CategoryID, TopicEditData, TopicID, TopicList};
 use crate::BlogError;
 
 use super::structs::Paginate;
 use super::traits::{StorageCategory, StorageTopic};
 use super::{structs::pagination, DEFAULT_PAGE_SIZE};
-
-// pub struct PGStore {
-//     pool: PgPool,
-// }
-//
-// impl PGStore {
-//     pub fn new(pool: PgPool) -> Self {
-//         Self { pool }
-//     }
-// }
-//
-// impl AsRef<PgPool> for PGStore {
-//     // TODO 注意此处的实现！！如何理解，与deref有什么区别？？
-//     fn as_ref(&self) -> &PgPool {
-//         &self.pool
-//     }
-// }
 
 #[async_trait]
 impl StorageCategory for PgPool {
@@ -185,5 +169,17 @@ impl StorageTopic for PgPool {
             .await
             .map_err(BlogError::from)?;
         Ok(n.rows_affected() > 0)
+    }
+}
+
+#[async_trait]
+impl StorageAdmin for PgPool {
+    async fn find(&self, email: &str) -> crate::Result<Admin> {
+        let sql = "SELECT id, email, password, is_del From admins WHERE email=$1 AND is_del=false";
+        sqlx::query_as::<_, Admin>(sql)
+            .bind(email)
+            .fetch_one(self)
+            .await
+            .map_err(BlogError::from)
     }
 }

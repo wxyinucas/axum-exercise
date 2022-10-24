@@ -1,6 +1,6 @@
 use axum::async_trait;
 
-use crate::models::{TopicEditData, TopicList};
+use crate::models::{Admin, TopicEditData, TopicList};
 use crate::Result;
 use crate::{form, models};
 
@@ -23,4 +23,9 @@ pub trait StorageTopic {
     async fn update(&self, form: &form::EditTopic, id: i64) -> Result<bool>;
     async fn find2edit(&self, id: i64) -> Result<TopicEditData>;
     async fn del_or_restore(&self, id: i64, is_del: bool) -> Result<bool>;
+}
+
+#[async_trait]
+pub trait StorageAdmin {
+    async fn find(&self, email: &str) -> Result<Admin>;
 }

@@ -21,5 +21,10 @@ pub struct CreateTopic {
     pub markdown: String,
 }
 
-
 pub type EditTopic = CreateTopic;
+
+#[derive(Deserialize)]
+pub struct AdminLogin {
+    pub email: String,
+    pub password: String,
+}

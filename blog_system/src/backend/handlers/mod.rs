@@ -1,5 +1,6 @@
 use serde::Deserialize;
 
+pub(crate) mod auth;
 pub(crate) mod category;
 pub(crate) mod index;
 pub(crate) mod topic;
