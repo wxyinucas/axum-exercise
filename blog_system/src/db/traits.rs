@@ -17,7 +17,7 @@ pub trait StorageCategory {
 
 #[async_trait]
 pub trait StorageTopic {
-    // todo: 先model，再form再trait。
+    // TODO: 实现流程，先model，再form再trait。
     async fn create(&self, form: &form::CreateTopic) -> Result<models::TopicID>;
     async fn list(&self, page: u32) -> Result<Paginate<Vec<TopicList>>>;
     async fn update(&self, form: &form::EditTopic, id: i64) -> Result<bool>;

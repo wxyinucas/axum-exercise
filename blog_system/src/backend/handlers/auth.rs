@@ -26,7 +26,7 @@ pub async fn login(
         .map_err(|err| match err {
             BlogError::NotFoundError(_) => BlogError::IncorrectLoginError,
             _ => err,
-        })?; // todo: 用span记录信息，event只是触发
+        })?; //TODO: 用span记录信息，event只是触发
 
     let verify = password::verify(&form.password, &admin_info.password)?;
     if !verify {

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// 分页对象
+/// 分页对象, TODO 为了解决什么问题，需要有什么功能，怎么和其他部分交互。
 #[derive(Deserialize, Serialize)]
 pub struct Paginate<T> {
     /// 当前页码

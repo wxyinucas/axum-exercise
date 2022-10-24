@@ -3,7 +3,7 @@ use axum::extract::{FromRequest, RequestParts};
 
 use crate::BlogError;
 
-pub struct Auth(pub String); // TODO 这个中间件又做了什么呢？
+pub struct Auth(pub String); // TODO 这个中间件又做了什么呢？放在哪里？
 
 #[async_trait]
 impl<B> FromRequest<B> for Auth

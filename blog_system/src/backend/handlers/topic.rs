@@ -12,6 +12,7 @@ use crate::{redirect, BlogError, RedirectView, Result};
 
 use super::super::handlers::Args;
 use super::super::view::topic::{Add, Edit, Index};
+// TODO: 如何设计 mod 暴露出的接口。
 
 pub async fn add_ui(Extension(pool): Extension<PgPool>) -> Result<HtmlView> {
     let cats = <PgPool as StorageCategory>::list(&pool)
@@ -72,5 +73,5 @@ pub async fn edit(
 
 pub async fn del(Extension(pool): Extension<PgPool>, Path(id): Path<i64>) -> Result<RedirectView> {
     <PgPool as StorageTopic>::del_or_restore(&pool, id, true).await?;
-    redirect("/admin/topic?msg=文章删除成功") // todo 去哪了？为啥呀？
+    redirect("/admin/topic?msg=文章删除成功") // TODO 去哪了？为啥呀？
 }

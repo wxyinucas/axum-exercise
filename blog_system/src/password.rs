@@ -1,4 +1,4 @@
-// TODO 了解这个rs file
+// TODO 为了什么，做了什么，怎么做的？
 use bcrypt::DEFAULT_COST;
 
 use crate::{BlogError, Result};

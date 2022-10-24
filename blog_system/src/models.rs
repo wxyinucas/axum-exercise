@@ -22,7 +22,7 @@ pub struct TopicList {
     pub category_id: i32,
     pub summary: String,
     pub hit: i32,
-    // pub dateline: time::SystemTime, // TODO 新处理方式
+    // pub dateline: time::SystemTime, // TODO 新处理方式, 怎么格式化、string来回变？
     pub dateline: String,
     pub is_del: bool,
     pub category_name: String,

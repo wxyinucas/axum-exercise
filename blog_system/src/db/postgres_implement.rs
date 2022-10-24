@@ -16,7 +16,7 @@ use super::{structs::pagination, DEFAULT_PAGE_SIZE};
 #[async_trait]
 impl StorageCategory for PgPool {
     async fn create(&self, form: &CreateCategory) -> crate::Result<CategoryID> {
-        let sql = "SELECT * FROM categories WHERE name=$1"; // todo count(*) https://github.com/launchbadge/sqlx
+        let sql = "SELECT * FROM categories WHERE name=$1"; // TODO count(*) https://github.com/launchbadge/sqlx
         let n = sqlx::query(sql)
             .bind(&form.name)
             .execute(self)
@@ -58,7 +58,7 @@ impl StorageCategory for PgPool {
     }
 
     async fn edit(&self, form: &EditCategory) -> crate::Result<bool> {
-        let sql = "SELECT * FROM categories WHERE name=$1"; // todo count(*) https://github.com/launchbadge/sqlx
+        let sql = "SELECT * FROM categories WHERE name=$1"; // TODO count(*)
         let n = sqlx::query(sql)
             .bind(&form.name)
             .execute(self)
@@ -123,8 +123,8 @@ impl StorageTopic for PgPool {
             .await
             .map_err(BlogError::from)?;
 
-        // todo count(*)
-        let sql = "SELECT * FROM v_topic_cat_list WHERE is_del=false";
+
+        let sql = "SELECT * FROM v_topic_cat_list WHERE is_del=false"; // TODO count(*)
         let total_records = sqlx::query(sql)
             .execute(self)
             .await

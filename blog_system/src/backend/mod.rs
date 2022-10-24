@@ -9,6 +9,7 @@ pub(crate) mod handlers;
 mod view;
 
 pub fn router() -> Router {
+    // TODO 如何设计 router 和 mod 的引入？
     let category_router = Router::new()
         .route("/", get(category::index))
         .route("/add", get(category::add_ui).post(category::add))

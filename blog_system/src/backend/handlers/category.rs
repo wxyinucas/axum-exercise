@@ -30,7 +30,7 @@ pub async fn add(
     Form(form): Form<form::CreateCategory>,
 ) -> Result<RedirectView> {
     <PgPool as StorageCategory>::create(&pool, &form).await?;
-    redirect("/admin/category?msg=分类添加成功")
+    redirect("/admin/category?msg=分类添加成功") // TODO 出现在哪里，怎么出现的？
 }
 
 pub async fn index(
