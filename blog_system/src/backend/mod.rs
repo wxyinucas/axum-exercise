@@ -5,7 +5,7 @@ use handlers::{category, topic};
 
 use crate::backend::handlers::index::index;
 
-mod handlers;
+pub(crate) mod handlers;
 mod view;
 
 pub fn router() -> Router {

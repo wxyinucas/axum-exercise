@@ -1,6 +1,7 @@
 use axum::routing::get;
 use axum::Router;
 
+use crate::backend::handlers::auth::{login, login_ui, logout};
 use crate::frontend::handler::index;
 
 mod handler;
