@@ -17,7 +17,6 @@ async fn main() -> Result<()> {
         .map_err(TodoError::from)?;
     let app = Router::new()
         .route("/", routing::get(usage))
-        // .route("/todo", get(todo_list::get_all))
         .route("/todo", get(todo_list::get_all).post(todo_list::create))
         .route(
             "/todo/:list_id",

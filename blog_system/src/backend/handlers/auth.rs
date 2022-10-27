@@ -28,7 +28,9 @@ pub async fn login(
             _ => err,
         })?; //TODO: 用span记录信息，event只是触发
 
-    let verify = password::verify(&form.password, &admin_info.password)?;
+    let hashed_pwd = crate::password::hash(&admin_info.password)?;
+    // let hashed_pwd = "select";
+    let verify = password::verify(&form.password, &hashed_pwd)?;
     if !verify {
         return Err(BlogError::IncorrectLoginError);
     }

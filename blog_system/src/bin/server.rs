@@ -17,10 +17,10 @@ async fn main() -> blog_system::Result<()> {
         .await
         .map_err(BlogError::from)?;
 
-    // let frontend_routers = blog_system::frontend::router();
+    let frontend_routers = blog_system::frontend::router();
     let backend_routers = blog_system::backend::router().layer(from_extractor::<Auth>());
     let app = Router::new()
-        // .nest("/", frontend_routers)
+        .nest("/", frontend_routers)
         .nest("/admin", backend_routers)
         .layer(Extension(pool));
 

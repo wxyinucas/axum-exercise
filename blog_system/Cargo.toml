@@ -9,7 +9,7 @@ authors = ["Rex Wang <wxyinucas@gmail.com>"]
 [dependencies]
 # server
 tokio = { version = "1", features = ["full"] }
-axum = "0.5"
+axum = { version = "0.5", features = ["headers"] }
 axum-macros = "0.2"
 
 # storage
@@ -32,3 +32,9 @@ pulldown-cmark = "0.9"
 # error handling
 anyhow = "1"
 thiserror = "1"
+
+# time
+chrono = "0.4"
+
+# password
+bcrypt = "0.13"

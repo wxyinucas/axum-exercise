@@ -42,7 +42,7 @@ struct UserLoginForm {
 
 #[derive(Deserialize)]
 struct LoginMessage {
-    // todo 现在有bug，如何与template更好地结合？
+    // to-do 现在有bug，如何与template更好地结合？
     msg: Option<String>,
 }
 

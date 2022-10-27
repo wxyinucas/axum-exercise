@@ -39,3 +39,13 @@ impl IntoResponse for BlogError {
         }
     }
 }
+
+impl BlogError {
+    pub fn make_into(error: impl Into<BlogError>) -> Self {
+        let res = error.into(); // TODO new 注意From和into？
+        tracing::error!("{}", res); // TODO new 这和上面的处理结果完全不一样哦，观察处理的位置是不同的
+        res
+    }
+}
+
+// #[cfg(test)]
